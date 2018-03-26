@@ -9,3 +9,5 @@ RUN echo "deb https://download.gocd.org /" | tee /etc/apt/sources.list.d/gocd.li
 RUN curl https://download.gocd.org/GOCD-GPG-KEY.asc | apt-key add -
 RUN apt-get update
 RUN apt-get install -y go-agent
+
+ENTRYPOINT ["/bin/bash", "/usr/share/go-agent/agent.sh"]
