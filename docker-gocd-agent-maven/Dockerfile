@@ -1,10 +1,11 @@
 FROM maven:3.5.3-jdk-8-slim
 
-ENV GOCD_FULL_VERSION=18.2.0-6228
+RUN apt-get update
+RUN apt-get install -y apt-transport-https
+RUN apt-get install -y gnupg
+RUN apt-get install -y git
 
-WORKDIR /home
-RUN curl -O https://download.gocd.org/binaries/$GOCD_FULL_VERSION/generic/go-agent-$GOCD_FULL_VERSION.zip
-RUN unzip -j -d /go-agent go-agent-$GOCD_FULL_VERSION.zip
-
-WORKDIR /
-ENTRYPOINT ["/bin/bash", "/go-agent/agent.sh"]
+RUN echo "deb https://download.gocd.org /" | tee /etc/apt/sources.list.d/gocd.list
+RUN curl https://download.gocd.org/GOCD-GPG-KEY.asc | apt-key add -
+RUN apt-get update
+RUN apt-get install -y go-agent
